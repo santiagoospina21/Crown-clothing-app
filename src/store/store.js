@@ -14,6 +14,7 @@ const middleWares = [
   process.env.NODE_ENV !== "production" && logger,
   thunk,
 ].filter(Boolean);
+
 //REDUX DEV-TOOLS
 const composeEnhancer =
   (process.env.NODE_ENV !== "production" &&
@@ -24,7 +25,7 @@ const composeEnhancer =
 const persistConfig = {
   key: "root",
   storage,
-  blacklist: ["user"],
+  whitelist: ["cart"],
 };
 
 const persistedReducer = persistReducer(persistConfig, rootReducer);
