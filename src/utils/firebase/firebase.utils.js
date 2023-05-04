@@ -71,34 +71,32 @@ export const getCategoriesAndDocuments = async () => {
 
 export const createUserDocumentFromAuth = async (
   userAuth,
-  addionalInformation = {}
+  additionalInformation = {}
 ) => {
   if (!userAuth) return;
 
-  const userDocRef = doc(db, "users", userAuth.uid); //database, collection , document
+  const userDocRef = doc(db, "users", userAuth.uid);
 
   const userSnapshot = await getDoc(userDocRef);
 
   if (!userSnapshot.exists()) {
-    //Si el usuario no existe
     const { displayName, email } = userAuth;
-    const createAt = new Date();
+    const createdAt = new Date();
 
     try {
-      //creamos el usuario
       await setDoc(userDocRef, {
         displayName,
         email,
-        createAt,
-        ...addionalInformation,
+        createdAt,
+        ...additionalInformation,
       });
     } catch (error) {
       console.log("error creating the user", error.message);
     }
   }
-  return userDocRef;
-};
 
+  return userSnapshot;
+};
 //Create user with email and password
 
 export const createAuthUserWithEmailAndPassword = async (email, password) => {
@@ -121,4 +119,18 @@ export const signOutUser = async () => await signOut(auth);
 //Observer Listener
 export const onAuthStateChangedListener = (callback) => {
   onAuthStateChanged(auth, callback);
+};
+
+//Redux Saga
+export const getCurrentUser = () => {
+  return new Promise((resolve, reject) => {
+    const unsubscribe = onAuthStateChanged(
+      auth,
+      (userAuth) => {
+        unsubscribe();
+        resolve(userAuth);
+      },
+      reject
+    );
+  });
 };

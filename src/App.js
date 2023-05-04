@@ -14,11 +14,12 @@ import Authentication from "./components/routes/authentication/authentication.co
 import Shop from "./components/routes/shop/shop.component";
 import Checkout from "./components/routes/checkout/checkout.component";
 
-import { setCurrentUser } from "./store/user/user.action";
+import { checkUserSession } from "./store/user/user.action";
 
 const App = () => {
   const dispatch = useDispatch();
-  useEffect(() => {
+
+  /*   useEffect(() => {
     const unsubscribe = onAuthStateChangedListener((user) => {
       if (user) {
         createUserDocumentFromAuth(user); //Si el usuario ya existe, no creara documento por el  if (!userSnapshot.exists()). Pero si no existe, se crea (Inicio con google)
@@ -26,6 +27,9 @@ const App = () => {
       dispatch(setCurrentUser(user)); //Seteara el usuario si esta iniciado o null si no
     });
     return unsubscribe;
+  }, []); */
+  useEffect(() => {
+    dispatch(checkUserSession());
   }, []);
 
   return (
