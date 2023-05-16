@@ -12,7 +12,7 @@ exports.handler = async (event) => {
       currency: "usd",
       payment_method_types: ["card"],
     });
-
+    console.log(paymentIntent);
     return {
       //Si tiene exito se devuelvo un objeto JSON con un codigo de estado HTTP 200
       statusCode: 200,
