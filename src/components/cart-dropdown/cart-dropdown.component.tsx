@@ -29,10 +29,12 @@ const CartDropdown = () => {
 
   const navigate = useNavigate();
 
+  const toggleIsCartOpen = () => dispatch(setIsCartOpen(!isCartOpen));
+
   const gotoCheckoutHandler = useCallback(() => {
     navigate("/checkout");
-    dispatch(setIsCartOpen(!isCartOpen));
-  }, [dispatch, isCartOpen]);
+    toggleIsCartOpen();
+  }, []);
 
   /*  useEffect(() => {
     console.log(isCartOpen);
