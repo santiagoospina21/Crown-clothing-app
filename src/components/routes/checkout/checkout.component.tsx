@@ -1,3 +1,5 @@
+import { memo } from "react";
+
 import { useSelector } from "react-redux";
 
 import {
@@ -15,7 +17,7 @@ import {
   Total,
 } from "./checkout.styles";
 
-const Checkout = () => {
+const Checkout = memo(() => {
   const cartItems = useSelector(selectCartItems);
 
   const cartTotal = useSelector(selectCartTotal);
@@ -46,6 +48,6 @@ const Checkout = () => {
       <PaymentForm />
     </CheckOutContainer>
   );
-};
+});
 
 export default Checkout;

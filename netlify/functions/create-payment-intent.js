@@ -1,5 +1,5 @@
 require("dotenv").config(); //Para cargar variables de entorno en el proyecto
-const stripe = require("stripe")(process.env.STRIPE_SECRET_KEY); //Se crea una instancia de la API Stripe
+const stripe = require("stripe")(process.env.REACT_APP_STRIPE_SECRET_KEY); //Se crea una instancia de la API Stripe
 
 exports.handler = async (event) => {
   //El parametro event contiene la info sobre la solicitud HTTP que ha activado la funcion serverless

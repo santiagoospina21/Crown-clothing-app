@@ -1,9 +1,6 @@
 import { useState, FormEvent } from "react";
-
 import { CardElement, useStripe, useElements } from "@stripe/react-stripe-js";
-
 import { StripeCardElement } from "@stripe/stripe-js";
-
 import { useSelector } from "react-redux";
 
 import { selectCartTotal } from "../../store/cart/cart.selector";
@@ -26,18 +23,17 @@ const PaymentForm = () => {
   const elements = useElements();
   const amount = useSelector(selectCartTotal);
   const currentUser = useSelector(selectCurrentUser);
-  const [isProcessingPayment, setisProcessingPayment] = useState(false);
+  const [isProcessingPayment, setIsProcessingPayment] = useState(false);
 
   const paymentHandler = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
-    if (!stripe || !elements) return;
+    if (!stripe || !elements) {
+      return;
+    }
 
-    setisProcessingPayment(true);
+    setIsProcessingPayment(true);
 
-    console.log(isProcessingPayment);
-
-    //Llama un endpoint de una funcion de netlify y crea un objeto de pago de Stripe. Devuelve el secreto del cliente
     const response = await fetch("/.netlify/functions/create-payment-intent", {
       method: "post",
       headers: {
@@ -50,11 +46,11 @@ const PaymentForm = () => {
       paymentIntent: { client_secret },
     } = response;
 
-    //Se llama la funcion para confirmar el pago con el secreto del cliente y utilizando los detalles de pago que se capturan con el CardElement
-
     const cardDetails = elements.getElement(CardElement);
 
     if (!ifValidCardElement(cardDetails)) return;
+
+    // if (cardDetails === null) return;
 
     const paymentResult = await stripe.confirmCardPayment(client_secret, {
       payment_method: {
@@ -65,14 +61,13 @@ const PaymentForm = () => {
       },
     });
 
-    setisProcessingPayment(false);
-    //Si se produce un error en el pago
+    setIsProcessingPayment(false);
+
     if (paymentResult.error) {
       alert(paymentResult.error);
     } else {
-      //Si se concreta el pago
       if (paymentResult.paymentIntent.status === "succeeded") {
-        alert("Payment successful");
+        alert("Payment Successful");
       }
     }
   };
@@ -80,13 +75,13 @@ const PaymentForm = () => {
   return (
     <PaymentFormContainer>
       <FormContainer onSubmit={paymentHandler}>
-        <h2>Credit Card Payment:</h2>
+        <h2>Credit Card Payment: </h2>
         <CardElement />
         <PaymentButton
           isLoading={isProcessingPayment}
           buttonType={BUTTON_TYPE_CLASSES.inverted}
         >
-          Pay Now
+          Pay now
         </PaymentButton>
       </FormContainer>
     </PaymentFormContainer>

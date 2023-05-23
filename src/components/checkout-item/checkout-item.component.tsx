@@ -16,6 +16,7 @@ import {
   Quantity,
   Arrow,
   Value,
+  Price,
   RemoveButton,
 } from "./checkout-item.styles";
 import { CartItem } from "../../store/cart/cart.types";
@@ -51,7 +52,7 @@ const CheckoutItem = ({ cartItem }: CheckoutItemProps) => {
         <Value>{quantity}</Value>
         <Arrow onClick={addItemHandler}>&#10095;</Arrow>
       </Quantity>
-      <BaseSpan>{price}</BaseSpan>
+      <Price>{price}</Price>
       <RemoveButton onClick={clearItemHandler}>&#10005;</RemoveButton>
     </CheckOutItemContainer>
   );
