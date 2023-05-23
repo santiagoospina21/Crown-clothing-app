@@ -1,13 +1,18 @@
-import { useCallback, useMemo } from "react";
-import { useSelector } from "react-redux";
+import { useCallback } from "react";
+import { useSelector, useDispatch } from "react-redux";
 
 import { useNavigate } from "react-router-dom";
 
-import { selectCartItems } from "../../store/cart/cart.selector";
+import {
+  selectCartItems,
+  selectIsCartOpen,
+} from "../../store/cart/cart.selector";
 
 import Button from "../button/button.component";
 
 import CartItem from "../cart-item/cart-item.component";
+
+import { setIsCartOpen } from "../../store/cart/cart.action";
 
 import {
   CartDropDownComponent,
@@ -16,12 +21,17 @@ import {
 } from "./cart-dropdown.styles";
 
 const CartDropdown = () => {
+  const dispatch = useDispatch();
+
   const cartItems = useSelector(selectCartItems);
+
+  const isCartOpen = useSelector(selectIsCartOpen);
 
   const navigate = useNavigate();
 
   const gotoCheckoutHandler = useCallback(() => {
     navigate("/checkout");
+    dispatch(setIsCartOpen(!isCartOpen));
   }, []);
 
   return (
